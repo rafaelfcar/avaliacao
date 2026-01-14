@@ -51,35 +51,32 @@ public class PessoaService {
 
     public Pessoa retornaPorId(Long id) {
         Pessoa p = pessoas.get(id);
-        if (p == null) throw new ResourceNotFoundException();
+        if (p == null) 
+        	throw new ResourceNotFoundException();
         return p;
     }
 
     public Pessoa incluirPessoa(Pessoa pessoa) {
-    	if (pessoa.getDataNascimento() == null) {
+    	if (pessoa.getDataNascimento() == null) 
     		throw new BadRequestException(DATA_NASCIMENTO_NULA);
-    	}
-    	if (pessoa.getDataAdmissao() == null) {
+    	if (pessoa.getDataAdmissao() == null) 
     	    throw new BadRequestException(DATA_ADMISSAO_NULA);
-    	}
         if (pessoa.getId() == null) {
             long nextId = pessoas.keySet().stream().max(Long::compare).orElse(0L) + 1;
             pessoa.setId(nextId);
-        } else if (pessoas.containsKey(pessoa.getId())) {
+        } else if (pessoas.containsKey(pessoa.getId())) 
             throw new ConflictException();
-        }
         pessoas.put(pessoa.getId(), pessoa);
         return pessoa;
     }
 
     public Pessoa alterarPessoa(Long id, Pessoa pessoa) {
-    	if (pessoa.getDataNascimento() == null) {
+    	if (pessoa.getDataNascimento() == null) 
     		throw new BadRequestException(DATA_NASCIMENTO_NULA);
-    	}
-    	if (pessoa.getDataAdmissao() == null) {
+    	if (pessoa.getDataAdmissao() == null) 
     	    throw new BadRequestException(DATA_ADMISSAO_NULA);
-    	}
-        if (!pessoas.containsKey(id)) throw new ResourceNotFoundException();
+        if (!pessoas.containsKey(id)) 
+        	throw new ResourceNotFoundException();
         pessoa.setId(id);
         pessoas.put(id, pessoa);
         return pessoa;
@@ -110,15 +107,15 @@ public class PessoaService {
     }
 
     public void excluirPessoa(Long id) {
-        if (pessoas.remove(id) == null) throw new ResourceNotFoundException();
+        if (pessoas.remove(id) == null) 
+        	throw new ResourceNotFoundException();
     }
 
     public long calcularIdade(Long id, String output) {
         Pessoa p = retornaPorId(id);
         
-        if (p.getDataNascimento() == null) {
+        if (p.getDataNascimento() == null) 
             throw new BadRequestException(DATA_NASCIMENTO_NULA);
-        }
         
         LocalDate now = LocalDate.of(2023, 2, 7);
 
@@ -133,9 +130,8 @@ public class PessoaService {
     public BigDecimal calcularSalario(Long id, String output) {
         Pessoa p = retornaPorId(id);
 
-        if (p.getDataAdmissao() == null) {
+        if (p.getDataAdmissao() == null) 
             throw new BadRequestException(DATA_ADMISSAO_NULA);
-        }
         
         long years = ChronoUnit.YEARS.between(
                 p.getDataAdmissao(), LocalDate.of(2023, 2, 7));
@@ -149,9 +145,8 @@ public class PessoaService {
 
         salary = salary.setScale(2, RoundingMode.UP);
 
-        if ("full".equals(output)) {
+        if ("full".equals(output)) 
             return salary;
-        }
 
         if ("min".equals(output)) {
             BigDecimal minimum = BigDecimal.valueOf(1302);
