@@ -90,12 +90,12 @@ public class PessoaService {
                 case "nome" -> pessoa.setNome(value.toString());
 
                 case "dataNascimento" ->{
-	                if (value == null)
+	                if (value == null || value.toString().trim().equals(""))
 	                    throw new BadRequestException(DATA_NASCIMENTO_NULA);
                     pessoa.setDataNascimento(LocalDate.parse(value.toString()));
                 }
                 case "dataAdmissao" ->{
-	                if (value == null)
+                	if (value == null || value.toString().trim().equals(""))
 	                    throw new BadRequestException(DATA_ADMISSAO_NULA);
                     pessoa.setDataAdmissao(LocalDate.parse(value.toString()));
                 }
